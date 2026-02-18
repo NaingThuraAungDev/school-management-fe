@@ -11,18 +11,18 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../core/auth/auth.service';
 
 @Component({
-    selector: 'app-login',
-    imports: [
-        ReactiveFormsModule,
-        MatCardModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        MatCheckboxModule,
-        MatIconModule,
-        MatProgressSpinnerModule
-    ],
-    template: `
+  selector: 'app-login',
+  imports: [
+    ReactiveFormsModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatCheckboxModule,
+    MatIconModule,
+    MatProgressSpinnerModule
+  ],
+  template: `
     <div class="login-container">
       <mat-card class="login-card">
         <mat-card-header>
@@ -44,7 +44,7 @@ import { AuthService } from '../../core/auth/auth.service';
                 autocomplete="email"
                 autofocus
               />
-              <mat-icon matPrefix>email</mat-icon>
+              <mat-icon matIconPrefix>email</mat-icon>
               @if (loginForm.get('email')?.hasError('required')) {
                 <mat-error>Email is required</mat-error>
               }
@@ -61,10 +61,10 @@ import { AuthService } from '../../core/auth/auth.service';
                 formControlName="password"
                 autocomplete="current-password"
               />
-              <mat-icon matPrefix>lock</mat-icon>
+              <mat-icon matIconPrefix>lock</mat-icon>
               <button
                 mat-icon-button
-                matSuffix
+                matIconSuffix
                 type="button"
                 (click)="hidePassword.set(!hidePassword())"
               >
@@ -104,7 +104,7 @@ import { AuthService } from '../../core/auth/auth.service';
       </mat-card>
     </div>
   `,
-    styles: [`
+  styles: [`
     .login-container {
       min-height: 100vh;
       display: flex;
@@ -208,35 +208,35 @@ import { AuthService } from '../../core/auth/auth.service';
   `]
 })
 export class LoginComponent {
-    private fb = inject(FormBuilder);
-    private authService = inject(AuthService);
-    private router = inject(Router);
+  private fb = inject(FormBuilder);
+  private authService = inject(AuthService);
+  private router = inject(Router);
 
-    protected hidePassword = signal(true);
-    protected isLoading = signal(false);
-    protected errorMessage = signal<string | null>(null);
+  protected hidePassword = signal(true);
+  protected isLoading = signal(false);
+  protected errorMessage = signal<string | null>(null);
 
-    protected loginForm: FormGroup;
+  protected loginForm: FormGroup;
 
-    constructor() {
-        this.loginForm = this.fb.group({
-            email: ['', [Validators.required, Validators.email]],
-            password: ['', Validators.required]
-        });
+  constructor() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required]
+    });
+  }
+
+  protected async onSubmit(): Promise<void> {
+    if (this.loginForm.valid) {
+      this.isLoading.set(true);
+      this.errorMessage.set(null);
+
+      try {
+        await this.authService.login(this.loginForm.value);
+      } catch (error: any) {
+        this.errorMessage.set(error.error?.message || 'Invalid username or password');
+      } finally {
+        this.isLoading.set(false);
+      }
     }
-
-    protected async onSubmit(): Promise<void> {
-        if (this.loginForm.valid) {
-            this.isLoading.set(true);
-            this.errorMessage.set(null);
-
-            try {
-                await this.authService.login(this.loginForm.value);
-            } catch (error: any) {
-                this.errorMessage.set(error.error?.message || 'Invalid username or password');
-            } finally {
-                this.isLoading.set(false);
-            }
-        }
-    }
+  }
 }

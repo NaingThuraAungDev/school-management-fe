@@ -7,17 +7,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
-    selector: 'app-search-input',
-    imports: [
-        ReactiveFormsModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatIconModule,
-        MatButtonModule
-    ],
-    template: `
+  selector: 'app-search-input',
+  imports: [
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule
+  ],
+  template: `
     <mat-form-field class="search-field" [appearance]="appearance()">
-      <mat-icon matPrefix>search</mat-icon>
+      <mat-icon matIconPrefix>search</mat-icon>
       <input 
         matInput 
         [formControl]="searchControl"
@@ -36,34 +36,34 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
       }
     </mat-form-field>
   `,
-    styles: [`
+  styles: [`
     .search-field {
       width: 100%;
     }
   `]
 })
 export class SearchInputComponent {
-    placeholder = input<string>('Search...');
-    debounceTime = input<number>(300);
-    appearance = input<'fill' | 'outline'>('outline');
+  placeholder = input<string>('Search...');
+  debounceTime = input<number>(300);
+  appearance = input<'fill' | 'outline'>('outline');
 
-    searchChange = output<string>();
+  searchChange = output<string>();
 
-    protected searchControl = new FormControl('');
+  protected searchControl = new FormControl('');
 
-    constructor() {
-        // Subscribe to search control changes with debounce
-        this.searchControl.valueChanges
-            .pipe(
-                debounceTime(this.debounceTime()),
-                distinctUntilChanged()
-            )
-            .subscribe(value => {
-                this.searchChange.emit(value || '');
-            });
-    }
+  constructor() {
+    // Subscribe to search control changes with debounce
+    this.searchControl.valueChanges
+      .pipe(
+        debounceTime(this.debounceTime()),
+        distinctUntilChanged()
+      )
+      .subscribe(value => {
+        this.searchChange.emit(value || '');
+      });
+  }
 
-    protected clear(): void {
-        this.searchControl.setValue('');
-    }
+  protected clear(): void {
+    this.searchControl.setValue('');
+  }
 }
