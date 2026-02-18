@@ -1,0 +1,186 @@
+@use './variables' as *;
+
+// Responsive Breakpoints
+@mixin respond-to($breakpoint) {
+    @if $breakpoint =='xs' {
+        @media (max-width: #{$breakpoint-sm - 1}) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='sm' {
+        @media (min-width: $breakpoint-sm) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='md' {
+        @media (min-width: $breakpoint-md) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='lg' {
+        @media (min-width: $breakpoint-lg) {
+            @content;
+        }
+    }
+
+    @else if $breakpoint =='xl' {
+        @media (min-width: $breakpoint-xl) {
+            @content;
+        }
+    }
+}
+
+// Card Elevation
+@mixin card-elevation($level: 1) {
+    @if $level ==1 {
+        box-shadow: $shadow-sm;
+    }
+
+    @else if $level ==2 {
+        box-shadow: $shadow-md;
+    }
+
+    @else if $level ==3 {
+        box-shadow: $shadow-lg;
+    }
+
+    @else if $level ==4 {
+        box-shadow: $shadow-xl;
+    }
+}
+
+// Flexbox Helpers
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-column {
+    display: flex;
+    flex-direction: column;
+}
+
+// Truncate Text
+@mixin truncate-text {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+@mixin line-clamp($lines: 2) {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+// Form Field Sizing
+@mixin form-field-small {
+    .mat-mdc-form-field {
+        font-size: $font-size-sm;
+    }
+
+    .mat-mdc-text-field-wrapper {
+        height: 40px;
+    }
+}
+
+@mixin form-field-large {
+    .mat-mdc-form-field {
+        font-size: $font-size-lg;
+    }
+
+    .mat-mdc-text-field-wrapper {
+        height: 56px;
+    }
+}
+
+// Button Variants
+@mixin button-variant($bg-color, $text-color: white) {
+    background-color: $bg-color;
+    color: $text-color;
+
+    &:hover:not(:disabled) {
+        background-color: darken($bg-color, 10%);
+    }
+
+    &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+}
+
+// Scrollbar Styling
+@mixin custom-scrollbar($width: 8px, $track-color: $gray-200, $thumb-color: $gray-400) {
+    &::-webkit-scrollbar {
+        width: $width;
+        height: $width;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: $track-color;
+        border-radius: $border-radius-sm;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: $thumb-color;
+        border-radius: $border-radius-sm;
+
+        &:hover {
+            background: darken($thumb-color, 10%);
+        }
+    }
+}
+
+// Loading Skeleton
+@mixin skeleton-loading {
+    background: linear-gradient(90deg, $gray-200 25%, $gray-300 50%, $gray-200 75%);
+    background-size: 200% 100%;
+    animation: skeleton-loading 1.5s infinite;
+}
+
+@keyframes skeleton-loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
+}
+
+// Grid Layout
+@mixin grid-layout($columns: 3, $gap: $spacing-md) {
+    display: grid;
+    grid-template-columns: repeat($columns, 1fr);
+    gap: $gap;
+}
+
+// Aspect Ratio
+@mixin aspect-ratio($width: 16, $height: 9) {
+    aspect-ratio: $width / $height;
+}
+
+// Absolute Center
+@mixin absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+// Focus Outline
+@mixin focus-outline($color: $primary-color) {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+}

@@ -1,0 +1,197 @@
+/* You can add global styles to this file, and also import other style files */
+
+// Import Angular Material theming
+@use '@angular/material' as mat;
+
+// Import custom styles
+@use './styles/variables' as *;
+@use './styles/mixins' as *;
+@use './styles/typography';
+
+// Include Material core styles
+@include mat.core();
+
+// Define custom theme using Material 3 API
+$custom-theme: mat.define-theme((color: (theme-type: light,
+                primary: mat.$blue-palette,
+                tertiary: mat.$cyan-palette,
+            ),
+            typography: (brand-family: $font-family-base,
+                plain-family: $font-family-base,
+            ),
+            density: (scale: 0,
+            )));
+
+// Include theme styles for Material components
+@include mat.all-component-themes($custom-theme);
+
+// Global Resets
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: $font-family-base;
+    font-size: $font-size-base;
+    line-height: $line-height-normal;
+    color: $gray-900;
+    background-color: $gray-50;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+// Utility Classes
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 $spacing-md;
+}
+
+.card {
+    background: white;
+    border-radius: $border-radius-md;
+    @include card-elevation(1);
+    padding: $spacing-lg;
+    transition: $transition-base;
+
+    &:hover {
+        @include card-elevation(2);
+    }
+}
+
+// Spacing Utilities
+@each $size in (xs, sm, md, lg, xl, 2xl, 3xl) {
+    .m-#{$size} {
+        margin: var(--spacing-#{$size});
+    }
+
+    .mt-#{$size} {
+        margin-top: var(--spacing-#{$size});
+    }
+
+    .mr-#{$size} {
+        margin-right: var(--spacing-#{$size});
+    }
+
+    .mb-#{$size} {
+        margin-bottom: var(--spacing-#{$size});
+    }
+
+    .ml-#{$size} {
+        margin-left: var(--spacing-#{$size});
+    }
+
+    .mx-#{$size} {
+        margin-left: var(--spacing-#{$size});
+        margin-right: var(--spacing-#{$size});
+    }
+
+    .my-#{$size} {
+        margin-top: var(--spacing-#{$size});
+        margin-bottom: var(--spacing-#{$size});
+    }
+
+    .p-#{$size} {
+        padding: var(--spacing-#{$size});
+    }
+
+    .pt-#{$size} {
+        padding-top: var(--spacing-#{$size});
+    }
+
+    .pr-#{$size} {
+        padding-right: var(--spacing-#{$size});
+    }
+
+    .pb-#{$size} {
+        padding-bottom: var(--spacing-#{$size});
+    }
+
+    .pl-#{$size} {
+        padding-left: var(--spacing-#{$size});
+    }
+
+    .px-#{$size} {
+        padding-left: var(--spacing-#{$size});
+        padding-right: var(--spacing-#{$size});
+    }
+
+    .py-#{$size} {
+        padding-top: var(--spacing-#{$size});
+        padding-bottom: var(--spacing-#{$size});
+    }
+}
+
+// CSS Variables for runtime theming
+:root {
+    --primary-color: #{$primary-color};
+    --accent-color: #{$accent-color};
+    --warn-color: #{$warn-color};
+    --success-color: #{$success-color};
+    --spacing-xs: #{$spacing-xs};
+    --spacing-sm: #{$spacing-sm};
+    --spacing-md: #{$spacing-md};
+    --spacing-lg: #{$spacing-lg};
+    --spacing-xl: #{$spacing-xl};
+    --spacing-2xl: #{$spacing-2xl};
+    --spacing-3xl: #{$spacing-3xl};
+}
+
+// Custom Scrollbar
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: $gray-200;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $gray-400;
+    border-radius: $border-radius-sm;
+
+    &:hover {
+        background: $gray-500;
+    }
+}
+
+// Loading Indicator
+.loading {
+    @include skeleton-loading;
+}
+
+// Page Layout
+.page-container {
+    padding: $spacing-lg;
+    min-height: calc(100vh - #{$header-height});
+}
+
+.page-header {
+    margin-bottom: $spacing-lg;
+}
+
+// Responsive Grid
+.grid {
+    @include grid-layout(1, $spacing-md);
+
+    @include respond-to('sm') {
+        @include grid-layout(2, $spacing-md);
+    }
+
+    @include respond-to('md') {
+        @include grid-layout(3, $spacing-lg);
+    }
+
+    @include respond-to('lg') {
+        @include grid-layout(4, $spacing-lg);
+    }
+}
